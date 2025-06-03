@@ -17,4 +17,3 @@ class DatasetCSV(Dataset):
                 self.transform_data()
         except Exception as e:
             print(f'error al cargar los datos: {e}')
-    

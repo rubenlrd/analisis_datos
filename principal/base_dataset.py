@@ -1,6 +1,8 @@
 # Clase base de donde heredaran los datasets api, csv, txt, excel
 from abc import ABC, abstractmethod
 
+from pandas import isnull
+
 class Dataset(ABC):
     # Inicializa el dataset con la fuente de datos o sea seria el constructor
     def __init__(self, fuente):
@@ -27,7 +29,14 @@ class Dataset(ABC):
     
     def validate_data(self):
         # Valida los datos cargados
-        pass
+        if self.data is None:
+            raise ValueError("No se han cargado los datos.")
+
+        if self.data.isnull().sum.sum() > 0:
+            print("Los datos contienen valores nulos.")
+        if self.data.duplicated().sum() > 0:
+            print("Los datos contienen filas duplicadas.")
+        return True
     
     def transform_data(self):
         # Transforma los datos cargados
