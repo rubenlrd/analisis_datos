@@ -1,7 +1,6 @@
 # Clase base de donde heredaran los datasets api, csv, txt, excel
 from abc import ABC, abstractmethod
 
-from pandas import isnull
 
 class Dataset(ABC):
     # Inicializa el dataset con la fuente de datos o sea seria el constructor
@@ -23,8 +22,8 @@ class Dataset(ABC):
         return self.__fuente
     
     @abstractmethod    
-    def load_data(self):
-        # Carga los datos desde la fuente
+    def cargar_datos(self):
+        # Método alternativo en español para cargar los datos desde la fuente
         pass
     
     def validate_data(self):
@@ -32,7 +31,7 @@ class Dataset(ABC):
         if self.data is None:
             raise ValueError("No se han cargado los datos.")
 
-        if self.data.isnull().sum.sum() > 0:
+        if self.data.isnull().sum().sum() > 0:
             print("Los datos contienen valores nulos.")
         if self.data.duplicated().sum() > 0:
             print("Los datos contienen filas duplicadas.")

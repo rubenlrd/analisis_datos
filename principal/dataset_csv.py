@@ -1,5 +1,5 @@
 import pandas as pd 
-from principal.base_dataset import Dataset
+from principal.dataset_base import Dataset
 
 class DatasetCSV(Dataset):
     # Inicializa el dataset de la fuente de datos CSV
@@ -7,11 +7,13 @@ class DatasetCSV(Dataset):
         super().__init__(fuente)
 
     # Carga los datos desde la fuente de datos en el archivo CSV
-    def load_data(self):
+    def cargar_datos(self):
         # controla los error al abrir el archivo
         try:
             df = pd.read_csv(self.fuente)
             self.data = df
+            print(f'Datos cargados correctamente desde {self.fuente}')
+            print(self.data.head())
             # si los datos son validados los transforma
             if self.validate_data():
                 self.transform_data()
