@@ -1,6 +1,7 @@
 from os import path
 from principal.dataset_csv import DatasetCSV
 from principal.dataset_excel import DatasetExcel
+from principal.dataset_api import DatasetAPI
 from principal.dataset_json import DatasetJson
 
 
@@ -48,7 +49,13 @@ while ejecucion:
         archJson= DatasetJson(json_path)
         archJson.cargar_datos()
     elif opcion == '4':
-        pass
+        # ejeccuta las instrucciones para cargar la api
+        ejecucion = True
+        # ruta de la api
+        url = input("Ingrese la Url de la API: ")
+        # carga y transforma
+        api = DatasetAPI(url)
+        api.cargar_datos()
     elif opcion == '5':
         print('Saliendo del sistema...')
         ejecucion = False
