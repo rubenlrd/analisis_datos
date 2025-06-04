@@ -23,10 +23,11 @@ while ejecucion:
         # ejecuta las instrucciones para cargar el archivo csv
         ejecución = True
         nombre_archivo = input("Ingrese nombre del archivo csv: ")
+        separador = input("Ingrese el separador del archivo csv (, - ;): ")
         # Ruta del la ubicación del archivo
         csv_path = path.join(path.dirname(__file__), "archivos", nombre_archivo)
         # cargar y transformar 
-        csv = DatasetCSV(csv_path)
+        csv = DatasetCSV(csv_path, separador)
         csv.cargar_datos()
     elif opcion == '2':
         # ejecuta las instrucciones para cargar el archivo excel

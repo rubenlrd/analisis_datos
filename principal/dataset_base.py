@@ -33,8 +33,10 @@ class Dataset(ABC):
 
         if self.data.isnull().sum().sum() > 0:
             print("Los datos contienen valores nulos.")
+            
         if self.data.duplicated().sum() > 0:
             print("Los datos contienen filas duplicadas.")
+
         return True
     
     def transform_data(self):

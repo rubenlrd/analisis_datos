@@ -1,6 +1,6 @@
 import requests
 import pandas as pd
-from domain.dataset import Dataset
+from principal.dataset_base import Dataset
 
 
 class DatasetAPI(Dataset):
