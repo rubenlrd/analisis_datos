@@ -1,20 +1,21 @@
-import pandas as pd
+import pandas as pd 
 from principal.dataset_base import Dataset
 
-class DatasetExcel(Dataset):
+class DatasetJson(Dataset):
     def __init__(self, fuente):
         super().__init__(fuente)
     
     def cargar_datos(self):
+        # controla los error al abrir el archivo
         try:
-            df = pd.read_excel(self.fuente)
+            df = pd.json_normalize(pd.read_json(self.fuente, orient='records', lines=True))
+            # df = pd.read_json(self.fuente, orient='records', lines=True)
             self.data = df
             print(f'Datos cargados correctamente desde {self.fuente}')
             print(self.data.head())
             # si los datos son validados los transforma
             if self.validate_data():
                 self.transform_data()
-            #return super().cargar_datos()
         except Exception as e:
-            print(f"Error al cargar datos desde Excel: {e}")
-            return False
+            print(f'error al cargar los datos: {e}')
+        #return super().cargar_datos()
