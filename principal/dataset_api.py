@@ -27,7 +27,6 @@ class DatasetAPI(Dataset):
                         df[col] = df[col].apply(lista_a_string)
 
                 self.datos = df
-                print(self.datos)
                 print("API cargada")
 
                 if self.validate_data():
