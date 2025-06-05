@@ -30,10 +30,10 @@ class DatasetAPI(Dataset):
                 print(self.datos)
                 print("API cargada")
 
-                if self.validar_datos():
-                    self.transformar_datos()
+                if self.validate_data():
+                    self.transform_data()
 
             else:
                 print("Error al obtener datos de API")
         except Exception as e:
-            print(f"Error API. {e}")
+                print(f"Error API. {e}")

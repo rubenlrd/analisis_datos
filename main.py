@@ -9,9 +9,10 @@ print ('Bienvenidos al sistema de carga de datos')
 print ('Los archivos a migrar deben estar en la carpeta Archivos')
 ejecucion = True
 
-print('-------- Menú ---------')
+
 # Ejecuta el programa hasta que el usuario decida salir
 while ejecucion:
+    print('--------------- Menú ----------------')
     print('1. Cargar datos desde un archivo CSV')
     print('2. Cargar datos desde un archivo Excel')
     print('3. Cargar datos desde un archivo json')
