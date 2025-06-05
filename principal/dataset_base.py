@@ -1,5 +1,6 @@
 # Clase base de donde heredaran los datasets api, csv, txt, excel
 from abc import ABC, abstractmethod
+# from xml.etree.ElementInclude import include
 
 
 class Dataset(ABC):
@@ -41,8 +42,23 @@ class Dataset(ABC):
     
     def transform_data(self):
         # Transforma los datos cargados
-        pass
+        if self.data is not None:
+            self.__datos.columns = self.data.columns.str.lower().str.replace(" ", "_")
+            self.__datos = self.data.drop_duplicates()
+            for col in self.data.select_dtypes(include="object").columns:
+                self.__datos[col] = self.data[col].astype(str).str.strip()
+            print("Transformaciones aplicadas")
+        else:
+            print("No hay datos para transformar.")
+
     
     def show_summary(self):
         # Muestra un resumen de los datos
-        pass
+            #return print(self.data.describe(include='all') if self.data is not None else "No hay Datos")
+        if self.data is not None:
+            print("Resumen de los datos:")
+            print(self.data.describe(include='all'))
+        else:
+            print("No hay datos para mostrar resumen.")
+
+        

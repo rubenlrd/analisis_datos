@@ -28,9 +28,10 @@ while ejecucion:
         separador = input("Ingrese el separador del archivo csv (, - ;): ")
         # Ruta del la ubicación del archivo
         csv_path = path.join(path.dirname(__file__), "archivos", nombre_archivo)
-        # cargar y transformar 
+        # cargar y transformar
         csv = DatasetCSV(csv_path, separador)
         csv.cargar_datos()
+        csv.show_summary()
     elif opcion == '2':
         # ejecuta las instrucciones para cargar el archivo excel
         ejecución = True
@@ -40,6 +41,7 @@ while ejecucion:
         # cargar y transformar 
         excel = DatasetExcel(excel_path)
         excel.cargar_datos()
+        excel.show_summary()
     elif opcion == '3':
         # ejecuta las instrucciones para cargar el archivo JSON
         ejecución = True
@@ -49,6 +51,7 @@ while ejecucion:
         # cargar y transformar 
         archJson= DatasetJson(json_path)
         archJson.cargar_datos()
+        archJson.show_summary()
     elif opcion == '4':
         # ejeccuta las instrucciones para cargar la api
         ejecucion = True
@@ -57,15 +60,12 @@ while ejecucion:
         # carga y transforma
         api = DatasetAPI(url)
         api.cargar_datos()
+        api.show_summary()
     elif opcion == '5':
         print('Saliendo del sistema...')
         ejecucion = False
         break
     else:
         print('Opción no válida, intente de nuevo.')
-
-
-
-
 
 # Guardar en base de datos

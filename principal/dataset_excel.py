@@ -10,7 +10,7 @@ class DatasetExcel(Dataset):
             df = pd.read_excel(self.fuente)
             self.data = df
             print(f'Datos cargados correctamente desde {self.fuente}')
-            print(self.data.head())
+            # print(self.data.head())
             # si los datos son validados los transforma
             if self.validate_data():
                 self.transform_data()

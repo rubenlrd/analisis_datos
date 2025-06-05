@@ -8,11 +8,11 @@ class DatasetJson(Dataset):
     def cargar_datos(self):
         # controla los error al abrir el archivo
         try:
-            df = pd.json_normalize(pd.read_json(self.fuente, orient='records', lines=True))
-            # df = pd.read_json(self.fuente, orient='records', lines=True)
+            # df = pd.json_normalize(pd.read_json(self.fuente, orient='records', lines=True))
+            df = pd.read_json(self.fuente, orient='records', lines=True)
             self.data = df
             print(f'Datos cargados correctamente desde {self.fuente}')
-            print(self.data.head())
+            # print(self.data.head())
             # si los datos son validados los transforma
             if self.validate_data():
                 self.transform_data()
