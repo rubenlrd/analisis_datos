@@ -1,8 +1,7 @@
 import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
-from decouple import config
-
+from decouple import config 
 
 class DataSaver:
     def __init__(self):
@@ -15,8 +14,7 @@ class DataSaver:
          url = f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
          self.engine = create_engine(url)
 
-
-    def guardar_dataframe(self, df, nombre_tabla):
+    def save_dataframe(self, df, nombre_tabla):
         if df is None:
             print(f"No se puede guardar: datos vacios para {nombre_tabla}")
             return

@@ -3,6 +3,7 @@ from principal.dataset_csv import DatasetCSV
 from principal.dataset_excel import DatasetExcel
 from principal.dataset_api import DatasetAPI
 from principal.dataset_json import DatasetJson
+from conexion.data_conexion import DataSaver
 
 
 print ('Bienvenidos al sistema de carga de datos')
@@ -32,6 +33,11 @@ while ejecucion:
         csv = DatasetCSV(csv_path, separador)
         csv.cargar_datos()
         csv.show_summary()
+        # Guardar en base de datos
+        db = DataSaver()
+        db.save_dataframe(csv.data, nombre_archivo)
+        
+
     elif opcion == '2':
         # ejecuta las instrucciones para cargar el archivo excel
         ejecución = True
@@ -42,6 +48,9 @@ while ejecucion:
         excel = DatasetExcel(excel_path)
         excel.cargar_datos()
         excel.show_summary()
+        # Guardar en base de datos
+        db = DataSaver()
+        db.save_dataframe(excel.data, nombre_archivo)
     elif opcion == '3':
         # ejecuta las instrucciones para cargar el archivo JSON
         ejecución = True
@@ -52,6 +61,9 @@ while ejecucion:
         archJson= DatasetJson(json_path)
         archJson.cargar_datos()
         archJson.show_summary()
+        # Guardar en base de datos
+        db = DataSaver()
+        db.save_dataframe(archJson.data, nombre_archivo)
     elif opcion == '4':
         # ejeccuta las instrucciones para cargar la api
         ejecucion = True
@@ -61,6 +73,9 @@ while ejecucion:
         api = DatasetAPI(url)
         api.cargar_datos()
         api.show_summary()
+        # Guardar en base de datos
+        db = DataSaver()
+        db.save_dataframe(api.data, url)
     elif opcion == '5':
         print('Saliendo del sistema...')
         ejecucion = False
@@ -68,4 +83,4 @@ while ejecucion:
     else:
         print('Opción no válida, intente de nuevo.')
 
-# Guardar en base de datos
+
