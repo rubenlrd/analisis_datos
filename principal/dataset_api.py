@@ -29,7 +29,7 @@ class DatasetAPI(Dataset):
                 else:
                     raise ValueError("Formato de respuesta no soportado")
                 
-                # Función mejorada para convertir listas a string
+                # Función mejorada para convertir listas a string - falta revisar por que no convierte como yo quiero
                 def lista_a_string(x):
                     if pd.isna(x):  # Manejar valores NaN
                         return ''
