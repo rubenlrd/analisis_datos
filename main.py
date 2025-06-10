@@ -5,6 +5,12 @@ from principal.dataset_api import DatasetAPI
 from principal.dataset_json import DatasetJson
 from conexion.data_conexion import DataSaver
 
+def guardar_datos(data, nombre_archivo):
+    #Guarda el DataFrame en la base de datos.
+    db = DataSaver()
+    db.save_dataframe(data, nombre_archivo)
+    print(f"Datos del archivo {nombre_archivo} guardados en la base de datos.")
+
 
 print ('Bienvenidos al sistema de carga de datos')
 print ('Los archivos a migrar deben estar en la carpeta Archivos')
@@ -34,8 +40,9 @@ while ejecucion:
         csv.cargar_datos()
         csv.show_summary()
         # Guardar en base de datos
-        db = DataSaver()
-        db.save_dataframe(csv.data, nombre_archivo)
+        guardar_datos(csv.data, nombre_archivo)
+        # db = DataSaver()
+        # db.save_dataframe(csv.data, nombre_archivo)
         
 
     elif opcion == '2':
@@ -48,9 +55,11 @@ while ejecucion:
         excel = DatasetExcel(excel_path)
         excel.cargar_datos()
         excel.show_summary()
-        # Guardar en base de datos
-        db = DataSaver()
-        db.save_dataframe(excel.data, nombre_archivo)
+        # Guardar en la base de datos 
+        guardar_datos(excel.data, nombre_archivo)
+        #db = DataSaver()
+        #db.save_dataframe(excel.data, nombre_archivo)
+
     elif opcion == '3':
         # ejecuta las instrucciones para cargar el archivo JSON
         ejecución = True
@@ -62,8 +71,9 @@ while ejecucion:
         archJson.cargar_datos()
         archJson.show_summary()
         # Guardar en base de datos
-        db = DataSaver()
-        db.save_dataframe(archJson.data, nombre_archivo)
+        guardar_datos(archJson.data, nombre_archivo)
+        # db = DataSaver()
+        # db.save_dataframe(archJson.data, nombre_archivo)
     elif opcion == '4':
         # ejeccuta las instrucciones para cargar la api
         ejecucion = True
@@ -74,8 +84,9 @@ while ejecucion:
         api.cargar_datos()
         api.show_summary()
         # Guardar en base de datos
-        db = DataSaver()
-        db.save_dataframe(api.data, url)
+        # db = DataSaver()
+        # db.save_dataframe(api.data, url)
+        guardar_datos(api.data, url)
     elif opcion == '5':
         print('Saliendo del sistema...')
         ejecucion = False

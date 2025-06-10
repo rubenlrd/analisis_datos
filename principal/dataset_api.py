@@ -3,13 +3,13 @@ import pandas as pd
 from principal.dataset_base import Dataset
 
 class DatasetAPI(Dataset):
-    def __init__(self, fuente):  # Corregido: __init__ en lugar de **init**
+    def __init__(self, fuente):
         super().__init__(fuente)
     
     def cargar_datos(self):
         try:
             print(f"Conectando a API: {self.fuente}")
-            response = requests.get(self.fuente, timeout=30)  # Agregado timeout
+            response = requests.get(self.fuente, timeout=30)
             
             if response.status_code == 200:
                 json_data = response.json()
@@ -29,24 +29,53 @@ class DatasetAPI(Dataset):
                 else:
                     raise ValueError("Formato de respuesta no soportado")
                 
-                # Verificar si un valor es una lista
-                def es_lista(x):
-                    return isinstance(x, list)
-                
-                # Transformar todas las columnas tipo list a string
+                # Función mejorada para convertir listas a string
                 def lista_a_string(x):
-                    if isinstance(x, list):
-                        return ', '.join(map(str, x))
-                    return x  # Retornar el valor original si no es lista
+                    if pd.isna(x):  # Manejar valores NaN
+                        return ''
+                    elif isinstance(x, list):
+                        # Manejar listas vacías
+                        if not x:
+                            return ''
+                        # Convertir elementos de la lista manejando None y otros tipos
+                        elementos_str = []
+                        for item in x:
+                            if pd.isna(item) or item is None:
+                                elementos_str.append('')
+                            elif isinstance(item, dict):
+                                # Si el elemento es un diccionario, convertirlo a string JSON
+                                elementos_str.append(str(item))
+                            else:
+                                elementos_str.append(str(item))
+                        return ', '.join(elementos_str)
+                    elif isinstance(x, dict):
+                        # Si es un diccionario, convertirlo a string
+                        return str(x)
+                    else:
+                        return str(x) if x is not None else ''
                 
-                # Aplicar transformación a columnas que contienen listas
+                # Aplicar transformación a todas las columnas
+                print("Convirtiendo datos complejos a texto plano...")
                 for col in df.columns:
-                    if df[col].apply(es_lista).any():
+                    # Verificar si la columna contiene listas, diccionarios o valores complejos
+                    tiene_listas = df[col].apply(lambda x: isinstance(x, (list, dict))).any()
+                    if tiene_listas:
+                        print(f"Convirtiendo columna '{col}' a texto plano")
                         df[col] = df[col].apply(lista_a_string)
                 
-                self.data = df  # Corregido: usar 'data' en lugar de 'datos'
+                # Asegurar que todos los valores sean strings o números simples
+                for col in df.columns:
+                    if df[col].dtype == 'object':
+                        df[col] = df[col].astype(str)
+                
+                self.data = df
                 print(f"API cargada exitosamente. Filas: {len(df)}, Columnas: {len(df.columns)}")
                 print(f"Columnas disponibles: {list(df.columns)}")
+                
+                # Mostrar tipos de datos para verificación
+                print("\nTipos de datos por columna:")
+                for col in df.columns:
+                    print(f"  {col}: {df[col].dtype}")
                 
                 # Validar y transformar datos si es necesario
                 if self.validate_data():
@@ -54,7 +83,7 @@ class DatasetAPI(Dataset):
                     
             else:
                 print(f"Error HTTP {response.status_code}: {response.reason}")
-                print(f"Respuesta del servidor: {response.text[:500]}")  # Primeros 500 caracteres
+                print(f"Respuesta del servidor: {response.text[:500]}")
                 
         except requests.exceptions.Timeout:
             print("Error: Tiempo de espera agotado al conectar con la API")
@@ -66,44 +95,5 @@ class DatasetAPI(Dataset):
             print(f"Error en el formato de datos: {e}")
         except Exception as e:
             print(f"Error inesperado: {e}")
-            # Opcional: imprimir más detalles del error para debugging
             import traceback
             traceback.print_exc()
-# import requests
-# import pandas as pd
-# from principal.dataset_base import Dataset
-
-
-# class DatasetAPI(Dataset):
-#     def __init__(self, fuente):
-#         super().__init__(fuente)
-
-#     def cargar_datos(self):
-#         try:
-#             response = requests.get(self.fuente)
-#             if response.status_code == 200:
-#                 df = pd.json_normalize(response.json())
-
-#                 # Verificar si un vañor es una lista
-#                 def es_lista(x):
-#                     return isinstance(x, list)
-
-#                 # Transformar todas las columnas tipo list a string
-#                 def lista_a_string(x):
-#                     if isinstance(x, list):
-#                         return ', '.join(map(str, x))
-
-#                 for col in df.columns:
-#                     if df[col].apply(es_lista).any():
-#                         df[col] = df[col].apply(lista_a_string)
-
-#                 self.datos = df
-#                 print("API cargada")
-
-#                 if self.validate_data():
-#                     self.transform_data()
-
-#             else:
-#                 print("Error al obtener datos de API")
-#         except Exception as e:
-#                 print(f"Error API. {e}")
